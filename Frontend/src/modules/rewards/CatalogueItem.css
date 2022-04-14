@@ -1,0 +1,28 @@
+.card-item{
+    width: 400px;
+    padding: 20px;
+    border: 0px solid #e9ecef;
+    border-left: 5px solid green;
+    box-shadow: 0px 0px 1px #28a745
+    
+}
+
+.card-item img {
+
+    width : 120px;
+    height: 80px;
+}
+ 
+.item-worth {
+    
+    float: right;
+   
+   
+}
+.cart-button {
+    background-color: #0e912c;
+    color: white;
+    /* width:120px; */
+    /* fonst-size: 16px; */
+
+}

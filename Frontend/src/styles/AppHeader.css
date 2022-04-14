@@ -1,0 +1,37 @@
+.app-header{
+    padding:90px;
+}
+
+.bg-header {
+    /* background-color: #0365ce!important; */
+    background-color: #0e912c!important;
+}
+
+.navbar-item {
+    color: #f8f9fa;
+    font-size: 16px;
+}
+
+.navbar-link {
+    color: #f8f9fa;
+    font-size: 16px;
+}
+
+.nav-item .form-inline .form-control {
+    width : 500px;
+    
+}
+
+
+.search-btn {
+    color: #f8f9fa;
+    border: 0px;
+    background-color: #07aa22;
+}
+
+.header-right {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.93);
+    padding : 5px;
+    /* display: inline-block; */
+}
