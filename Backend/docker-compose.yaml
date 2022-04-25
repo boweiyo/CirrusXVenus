@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: 'venus-backend:latest'
+    image: 'venus-backend:250422'
     build:
       context: .
     container_name: venus_backend
@@ -25,3 +25,14 @@ services:
       - POSTGRES_PASSWORD=password
     ports:
       - '5490:5432'
+  frontend:
+    image: 'venus-frontend:250422'
+    build:
+      context: .
+    container_name: venus_frontend
+    depends_on:
+      - app
+    ports:
+      - '3000:3000'
+    environment:
+      - API_URL=app
