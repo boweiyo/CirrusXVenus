@@ -1,8 +1,8 @@
-version: '3.8'
+version: '3.9'
 
 services:
   app:
-    image: 'venus-backend:250422'
+    image: 'boweiyo/venus-backend:250422'
     build:
       context: .
     container_name: venus_backend
@@ -11,7 +11,7 @@ services:
     ports:
       - '8080:8080'
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db/testdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db/sa
       - SPRING_DATASOURCE_USERNAME=sa
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
@@ -26,7 +26,7 @@ services:
     ports:
       - '5490:5432'
   frontend:
-    image: 'venus-frontend:250422'
+    image: 'boweiyo/venus-frontend:250422'
     build:
       context: .
     container_name: venus_frontend
