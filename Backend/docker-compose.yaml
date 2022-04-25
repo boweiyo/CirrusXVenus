@@ -1,8 +1,8 @@
-version: '3.8'
+version: '4.0'
 
 services:
   app:
-    image: 'venus-backend:250422'
+    image: 'boweiyo/venus-backend:250422'
     build:
       context: .
     container_name: venus_backend
@@ -26,7 +26,7 @@ services:
     ports:
       - '5490:5432'
   frontend:
-    image: 'venus-frontend:250422'
+    image: 'boweiyo/venus-frontend:250422'
     build:
       context: .
     container_name: venus_frontend
