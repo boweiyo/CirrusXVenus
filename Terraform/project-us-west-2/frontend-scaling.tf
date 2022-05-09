@@ -101,3 +101,20 @@ resource "aws_lb_target_group" "bowei-frontend-tg-80" {
   protocol = "TCP"
   vpc_id   = aws_vpc.bowei-vpc.id
 }
+
+//listener for TLS:443
+data "aws_acm_certificate" "acm-certificate" {
+  domain_name = "bowei.cloudtech-training.com"
+}
+
+resource "aws_lb_listener" "venus-lb-ssl-listener" {
+  load_balancer_arn = aws_lb.bowei-frontend-lb.arn
+  port              = "443"
+  protocol          = "TLS"
+  ssl_policy = "ELBSecurityPolicy-TLS13-1-2-2021-06" 
+  certificate_arn = data.aws_acm_certificate.acm-certificate.arn
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.bowei-frontend-tg-80.arn
+  }
+}
