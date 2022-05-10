@@ -1,16 +1,17 @@
-resource "aws_launch_template" "venus-backend-80" {
-  name_prefix   = "venus-backend-80"
+resource "aws_launch_template" "venus-backend-8080" {
+  name_prefix   = "venus-backend-8080"
   image_id      = "ami-0ca285d4c2cda3300"
   instance_type = "t3a.medium"
   user_data     = filebase64("backend-launch.sh")
-  # vpc_security_group_ids = [aws_security_group.venus-vpc-sg.id]
   network_interfaces {
     associate_public_ip_address = false
+    security_groups             = [aws_security_group.venus-vpc-sg.id]
   }
+  key_name               = "bowei"
   update_default_version = true
 }
 resource "aws_autoscaling_group" "venus-backend-asg" {
-  vpc_zone_identifier       = [aws_subnet.venus-vpc-pb-2a.id, aws_subnet.venus-vpc-pb-2b.id]
+  vpc_zone_identifier       = [aws_subnet.venus-vpc-pvt-2a.id, aws_subnet.venus-vpc-pvt-2b.id]
   name                      = "venus-backend-asg"
   max_size                  = 3
   min_size                  = 1
@@ -19,10 +20,10 @@ resource "aws_autoscaling_group" "venus-backend-asg" {
   force_delete              = true
   termination_policies      = ["OldestInstance"]
   launch_template {
-    id      = aws_launch_template.venus-backend-80.id
+    id      = aws_launch_template.venus-backend-8080.id
     version = "$Default"
   }
-  target_group_arns = [aws_lb_target_group.venus-backend-tg-80.arn]
+  target_group_arns = [aws_lb_target_group.venus-backend-tg-8080.arn]
 }
 resource "aws_autoscaling_policy" "venus-backend-asp" {
   name                   = "venus-backend-asp"
@@ -61,18 +62,18 @@ resource "aws_lb" "venus-backend-lb" {
   load_balancer_type = "network"
   subnets            = [aws_subnet.venus-vpc-pb-2a.id, aws_subnet.venus-vpc-pb-2b.id]
 }
-resource "aws_lb_listener" "venus-backend-lb-listener-80" {
+resource "aws_lb_listener" "venus-backend-lb-listener-8080" {
   load_balancer_arn = aws_lb.venus-backend-lb.arn
   port              = "80"
   protocol          = "TCP"
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.venus-backend-tg-80.arn
+    target_group_arn = aws_lb_target_group.venus-backend-tg-8080.arn
   }
 }
-resource "aws_lb_target_group" "venus-backend-tg-80" {
-  name     = "venus-backend-tg-80"
-  port     = 80
+resource "aws_lb_target_group" "venus-backend-tg-8080" {
+  name     = "venus-backend-tg-8080"
+  port     = 8080
   protocol = "TCP"
   vpc_id   = aws_vpc.venus-vpc.id
 }
