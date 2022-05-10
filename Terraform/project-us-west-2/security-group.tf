@@ -1,5 +1,5 @@
-resource "aws_security_group" "bowei-vpc-sg" {
-    vpc_id = aws_vpc.bowei-vpc.id
+resource "aws_security_group" "venus-vpc-sg" {
+  vpc_id = aws_vpc.venus-vpc.id
   egress {
     from_port   = 0
     to_port     = 0
@@ -27,7 +27,7 @@ resource "aws_security_group" "bowei-vpc-sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags={
-    Name = "bowei-vpc-sg"
+  tags = {
+    Name = "venus-vpc-sg"
   }
 }

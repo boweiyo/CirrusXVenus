@@ -1,8 +1,5 @@
-# data "aws_subnet_ids" "postgres" {
-#   vpc_id = aws_vpc.bowei-vpc.id
-# }
 resource "aws_db_subnet_group" "db-subnet-grp" {
-  subnet_ids = [aws_subnet.bowei-vpc-pvt-2a.id, aws_subnet.bowei-vpc-pvt-2b.id]
+  subnet_ids = [aws_subnet.venus-vpc-pvt-2a.id, aws_subnet.venus-vpc-pvt-2b.id]
 }
 
 resource "aws_db_instance" "postgres" {
@@ -10,7 +7,7 @@ resource "aws_db_instance" "postgres" {
   storage_type           = "gp2"
   engine                 = "postgres"
   instance_class         = "db.t3.micro"
-  identifier             = "bowei-rds"
+  identifier             = "venus-rds"
   db_name                = "smartbankapp"
   username               = "postgres"
   password               = "postgres"
