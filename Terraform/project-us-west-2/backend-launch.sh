@@ -3,4 +3,4 @@ sudo yum update -y
 sudo yum install docker -y
 sudo systemctl enable docker
 sudo systemctl start docker
-docker run -p 80:80 -d -e REACT_API_URL=bowei-rds.c67d3uautcvu.us-west-2.rds.amazonaws.com/ boweiyo/venus-backend:250422
+docker run -p 8080:8080 -d -e spring.datasource.url=jdbc:postgresql://${venus-db}/smartbankapp -e spring.datasource.username=postgres -e spring.datasource.password=postgres boweiyo/venus-backend:250422
