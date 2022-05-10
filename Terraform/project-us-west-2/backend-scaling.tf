@@ -1,8 +1,16 @@
+data "template_file" "venus-postgres-db-address" {
+  template = file("backend-launch.sh")
+
+  vars = {
+    venus-db = "${aws_db_instance.postgres.address}"
+  }
+}
+
 resource "aws_launch_template" "venus-backend-8080" {
   name_prefix   = "venus-backend-8080"
   image_id      = "ami-0ca285d4c2cda3300"
   instance_type = "t3a.medium"
-  user_data     = filebase64("backend-launch.sh")
+  user_data = base64encode(data.template_file.venus-postgres-db-address.rendered)
   network_interfaces {
     associate_public_ip_address = false
     security_groups             = [aws_security_group.venus-vpc-sg.id]
