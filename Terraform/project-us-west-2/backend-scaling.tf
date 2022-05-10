@@ -7,7 +7,6 @@ resource "aws_launch_template" "venus-backend-8080" {
     associate_public_ip_address = false
     security_groups             = [aws_security_group.venus-vpc-sg.id]
   }
-  key_name               = "bowei"
   update_default_version = true
 }
 resource "aws_autoscaling_group" "venus-backend-asg" {
