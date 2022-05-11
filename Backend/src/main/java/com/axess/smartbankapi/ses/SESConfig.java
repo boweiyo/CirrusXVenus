@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
 
 @Configuration
-public class SESConfig{
+public class SESConfig {
 
     @Value("${cloud.aws.region.static}")
     private String region;

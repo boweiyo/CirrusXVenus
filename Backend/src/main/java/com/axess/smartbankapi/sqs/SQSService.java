@@ -17,8 +17,8 @@ public class SQSService {
     private String endpoint;
 
     public void sendMessage(String message) {
-        log.info("Sending Message to SQS: "+message);
+        log.info("Sending Message to SQS: " + message);
         queueMessagingTemplate.convertAndSend(endpoint, new TestMessage(message));
-        log.info("Message sent to SQS: "+message);
+        log.info("Message sent to SQS: " + message);
     }
 }

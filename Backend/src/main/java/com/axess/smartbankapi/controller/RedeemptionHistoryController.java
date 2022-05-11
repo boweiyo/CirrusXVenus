@@ -22,9 +22,9 @@ import com.axess.smartbankapi.service.RedeemptionHistoryService;
 @RestController
 @CrossOrigin
 @RequestMapping("/history")
+@Slf4j
 public class RedeemptionHistoryController {
 
-	
 	@Autowired
 	private RedeemptionHistoryService historyService;
 
@@ -33,16 +33,19 @@ public class RedeemptionHistoryController {
 
 	@Autowired
 	private EmailService sesService;
-	
-	@PostMapping("/")
-	public ResponseEntity<?> saveHistory(@RequestBody UserRedeemptionHistoryDto historyDto) throws RecordNotFoundException, RecordExistException, RecordNotCreatedException {
 
-		sqsService.sendMessage("Item " + historyDto.getItemsRedeemed() + " are redeeded with " + historyDto.getTotalPointsRedeemed() + " points.");
+	@PostMapping("/")
+	public ResponseEntity<?> saveHistory(@RequestBody UserRedeemptionHistoryDto historyDto)
+			throws RecordNotFoundException, RecordExistException, RecordNotCreatedException {
+
+		sqsService.sendMessage("Item " + historyDto.getItemsRedeemed() + " are redeeded with "
+				+ historyDto.getTotalPointsRedeemed() + " points.");
 		Email email = new Email();
 		email.setFrom("admin@cloudtech-training.com");
 		email.setTo("boweiiii@gmail.com");
 		email.setSubject("Redemption");
-		email.setBody("Item " + historyDto.getItemsRedeemed() + " are redeeded with " + historyDto.getTotalPointsRedeemed() + " points.");
+		email.setBody("Item " + historyDto.getItemsRedeemed() + " are redeeded with "
+				+ historyDto.getTotalPointsRedeemed() + " points.");
 		sesService.sendEmail(email);
 
 		ApiSuccessResponse response = new ApiSuccessResponse();
@@ -57,9 +60,6 @@ public class RedeemptionHistoryController {
 		return ResponseEntity.status(HttpStatus.OK).header("status", String.valueOf(HttpStatus.OK))
 				.body(response);
 
-
 	}
 
-	
-	
 }
