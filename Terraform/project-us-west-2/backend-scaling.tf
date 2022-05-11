@@ -10,7 +10,7 @@ resource "aws_launch_template" "venus-backend-8080" {
   name_prefix   = "venus-backend-8080"
   image_id      = "ami-0ca285d4c2cda3300"
   instance_type = "t3a.medium"
-  user_data = base64encode(data.template_file.venus-postgres-db-address.rendered)
+  user_data     = base64encode(data.template_file.venus-postgres-db-address.rendered)
   network_interfaces {
     associate_public_ip_address = false
     security_groups             = [aws_security_group.venus-vpc-sg.id]
@@ -83,4 +83,21 @@ resource "aws_lb_target_group" "venus-backend-tg-8080" {
   port     = 8080
   protocol = "TCP"
   vpc_id   = aws_vpc.venus-vpc.id
+}
+
+//listener for TLS:443
+data "aws_acm_certificate" "acm-certificate" {
+  domain = "bowei.cloudtech-training.com"
+}
+
+resource "aws_lb_listener" "venus-lb-ssl-listener" {
+  load_balancer_arn = aws_lb.venus-backend-lb.arn
+  port              = "443"
+  protocol          = "TLS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn   = data.aws_acm_certificate.acm-certificate.arn
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.venus-backend-tg-8080.arn
+  }
 }
