@@ -86,16 +86,16 @@ resource "aws_lb_target_group" "venus-backend-tg-8080" {
 }
 
 //listener for TLS:443
-data "aws_acm_certificate" "acm-certificate" {
+data "aws_acm_certificate" "backend-acm-certificate" {
   domain = "bowei.cloudtech-training.com"
 }
 
-resource "aws_lb_listener" "venus-lb-ssl-listener" {
+resource "aws_lb_listener" "venus-backend-lb-ssl-listener" {
   load_balancer_arn = aws_lb.venus-backend-lb.arn
   port              = "443"
   protocol          = "TLS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  certificate_arn   = data.aws_acm_certificate.acm-certificate.arn
+  certificate_arn   = data.aws_acm_certificate.backend-acm-certificate.arn
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.venus-backend-tg-8080.arn

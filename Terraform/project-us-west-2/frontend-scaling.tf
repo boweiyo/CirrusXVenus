@@ -1,16 +1,25 @@
+# data "template_file" "venus-postgres-db-address" {
+#   template = file("backend-launch.sh")
+
+#   vars = {
+#     venus-db = "${aws_db_instance.postgres.address}"
+#   }
+# }
+
 resource "aws_launch_template" "venus-frontend-80" {
   name_prefix   = "venus-frontend-80"
   image_id      = "ami-0ca285d4c2cda3300"
   instance_type = "t3a.medium"
   user_data     = filebase64("frontend-launch.sh")
-  # vpc_security_group_ids = [aws_security_group.venus-vpc-sg.id]
+  # user_data     = base64encode(data.template_file.venus-postgres-db-address.rendered)
   network_interfaces {
     associate_public_ip_address = false
+    security_groups             = [aws_security_group.venus-vpc-sg.id]
   }
   update_default_version = true
 }
 resource "aws_autoscaling_group" "venus-frontend-asg" {
-  vpc_zone_identifier       = [aws_subnet.venus-vpc-pb-2a.id, aws_subnet.venus-vpc-pb-2b.id]
+  vpc_zone_identifier       = [aws_subnet.venus-vpc-pvt-2a.id, aws_subnet.venus-vpc-pvt-2b.id]
   name                      = "venus-frontend-asg"
   max_size                  = 3
   min_size                  = 1
@@ -78,16 +87,16 @@ resource "aws_lb_target_group" "venus-frontend-tg-80" {
 }
 
 //listener for TLS:443
-data "aws_acm_certificate" "acm-certificate" {
-  domain_name = "venus.cloudtech-training.com"
+data "aws_acm_certificate" "frontend-acm-certificate" {
+  domain = "venus.cloudtech-training.com"
 }
 
-resource "aws_lb_listener" "venus-lb-ssl-listener" {
+resource "aws_lb_listener" "venus-frontend-lb-ssl-listener" {
   load_balancer_arn = aws_lb.venus-frontend-lb.arn
   port              = "443"
   protocol          = "TLS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  certificate_arn   = data.aws_acm_certificate.acm-certificate.arn
+  certificate_arn   = data.aws_acm_certificate.frontend-acm-certificate.arn
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.venus-frontend-tg-80.arn

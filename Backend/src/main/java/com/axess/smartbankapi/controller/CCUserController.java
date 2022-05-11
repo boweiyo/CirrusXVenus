@@ -2,6 +2,7 @@ package com.axess.smartbankapi.controller;
 
 import java.util.List;
 
+import com.axess.smartbankapi.sqs.SQSService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,10 @@ public class CCUserController {
 	
 	@Autowired
 	private CCUserService ccUserService;
-	
+
+	@Autowired
+	private SQSService sqsService;
+
 	@PostMapping("/login")
 	public ResponseEntity<?> verifyLogin(@RequestBody LoginDto loginDto) throws RecordNotFoundException {
 		
