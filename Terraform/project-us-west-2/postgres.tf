@@ -14,4 +14,5 @@ resource "aws_db_instance" "postgres" {
   db_subnet_group_name   = aws_db_subnet_group.db-subnet-grp.name
   vpc_security_group_ids = [aws_security_group.db-sg.id]
   skip_final_snapshot    = "true"
+  multi_az               = "true"
 }
