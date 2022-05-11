@@ -16,6 +16,13 @@ resource "aws_launch_template" "venus-frontend-80" {
     associate_public_ip_address = false
     security_groups             = [aws_security_group.venus-vpc-sg.id]
   }
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = {
+      Name = "venus-frontend-tf"
+    }
+  }
   update_default_version = true
 }
 resource "aws_autoscaling_group" "venus-frontend-asg" {
